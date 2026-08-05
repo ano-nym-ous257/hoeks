@@ -1,24 +1,26 @@
-import {
-  ArrowDownRight,
-  ArrowUpRight,
-  Cloud,
-  GitBranch,
-  Network,
-  ShieldCheck,
-} from "lucide-react";
+import { ArrowDownRight, GitBranch } from "lucide-react";
+import { StatusBadge } from "@/components/ui/status-badge";
+import { Terminal } from "@/components/ui/terminal";
 
-const disciplines = [
+const terminalLines = [
   {
-    title: "Cybersecurity",
-    icon: ShieldCheck,
+    command: "whoami",
+    output: [
+      "Gamefreak",
+      "Cybersecurity · AWS Cloud · Networking · Software",
+    ],
   },
   {
-    title: "AWS Cloud",
-    icon: Cloud,
+    command: "aws sts get-caller-identity",
+    output: "AWS environment connected",
   },
   {
-    title: "Networking",
-    icon: Network,
+    command: "git status --short --branch",
+    output: "## main...origin/main",
+  },
+  {
+    command: "systemctl status portfolio",
+    output: "Active: running",
   },
 ];
 
@@ -31,10 +33,7 @@ export default function Hero() {
 
       <div className="hero-layout">
         <div className="hero-main">
-          <div className="availability editorial-availability">
-            <span className="availability-dot" />
-            Open to professional opportunities
-          </div>
+          <StatusBadge>Systems online · Open to opportunities</StatusBadge>
 
           <p className="hero-kicker">
             Secure infrastructure · Intelligent software
@@ -69,38 +68,7 @@ export default function Hero() {
           </div>
         </div>
 
-        <aside className="hero-visual" aria-label="Technical disciplines">
-          <div className="hero-red-block hero-red-block-large">
-            <span>GF</span>
-          </div>
-
-          <div className="hero-discipline-list">
-            {disciplines.map((discipline, index) => {
-              const Icon = discipline.icon;
-
-              return (
-                <div className="hero-discipline" key={discipline.title}>
-                  <span className="hero-discipline-number">
-                    0{index + 1}
-                  </span>
-
-                  <Icon size={20} />
-
-                  <span>{discipline.title}</span>
-
-                  <ArrowUpRight size={17} />
-                </div>
-              );
-            })}
-          </div>
-
-          <div className="hero-visual-grid" aria-hidden="true">
-            <span />
-            <span />
-            <span />
-            <span />
-          </div>
-        </aside>
+        <Terminal lines={terminalLines} />
       </div>
 
       <div className="hero-bottom-line">
