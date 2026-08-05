@@ -4,10 +4,14 @@ import { navigation } from "@/data/navigation";
 export default function Navbar() {
   return (
     <header className="site-header">
-      <nav className="container nav">
-        <a className="brand" href="#top" aria-label="Gamefreak home">
+      <nav className="container nav editorial-nav">
+        <a className="brand editorial-brand" href="#top" aria-label="Gamefreak home">
           <span className="brand-mark">G</span>
-          <span>Gamefreak</span>
+
+          <span className="brand-copy">
+            <strong>Gamefreak</strong>
+            <small>Secure systems & software</small>
+          </span>
         </a>
 
         <div className="nav-links">
@@ -18,8 +22,8 @@ export default function Navbar() {
           ))}
         </div>
 
-        <a className="nav-contact" href="#contact">
-          Let&apos;s talk
+        <a className="nav-contact editorial-contact" href="#contact">
+          Contact
           <ArrowUpRight size={16} />
         </a>
       </nav>
