@@ -1776,3 +1776,13 @@ main {
     opacity: 1;
   }
 }
+
+.editorial-section > .design-section-heading + * {
+  margin-top: 74px;
+}
+
+@media (max-width: 760px) {
+  .editorial-section > .design-section-heading + * {
+    margin-top: 52px;
+  }
+}
