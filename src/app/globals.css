@@ -2492,3 +2492,32 @@ main {
     gap: 10px;
   }
 }
+
+.editorial-projects > div,
+.system-skills-grid > div,
+.experience-timeline > div {
+  min-width: 0;
+}
+
+.editorial-projects > div > .editorial-project,
+.system-skills-grid > div > .system-skill-module {
+  height: 100%;
+}
+
+.experience-timeline > div {
+  border-bottom: 1px solid var(--border);
+}
+
+.experience-timeline > div:last-child {
+  border-bottom: 0;
+}
+
+.experience-timeline > div .experience-entry {
+  border-bottom: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [style*="transform"] {
+    transition-duration: 0.01ms !important;
+  }
+}
