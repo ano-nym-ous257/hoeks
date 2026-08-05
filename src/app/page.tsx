@@ -1,17 +1,15 @@
 import Navbar from "@/components/layout/Navbar";
 import Hero from "@/components/sections/Hero";
+import About from "@/components/sections/About";
+import Expertise from "@/components/sections/Expertise";
 import {
   ArrowUpRight,
   Cloud,
   Code2,
-  GitBranch,
-  Globe2,
-  Layers3,
   Mail,
   Network,
   ServerCog,
   ShieldCheck,
-  Sparkles,
   Terminal,
 } from "lucide-react";
 
@@ -154,62 +152,8 @@ export default function Home() {
 
       <Navbar />
       <Hero />
-
-      <section className="container section" id="about">
-        <div className="section-heading">
-          <p>01 / About</p>
-          <h2>Technology works best when it is secure and dependable.</h2>
-        </div>
-
-        <div className="about-grid">
-          <p className="about-lead">
-            I approach technology as a complete system—not just a collection of
-            individual tools.
-          </p>
-
-          <div className="about-copy">
-            <p>
-              My work combines cybersecurity principles, AWS cloud
-              technologies, network infrastructure, technical troubleshooting
-              and software engineering.
-            </p>
-
-            <p>
-              I focus on understanding how systems communicate, how they fail,
-              how they can be secured and how thoughtful software can improve
-              the way people interact with technology.
-            </p>
-
-            <p>
-              This multidisciplinary approach helps me design solutions that
-              are functional, reliable, scalable and security-conscious.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <section className="container section" id="expertise">
-        <div className="section-heading">
-          <p>02 / Expertise</p>
-          <h2>Supporting the full technology environment.</h2>
-        </div>
-
-        <div className="capabilities">
-          {capabilities.map((capability) => {
-            const Icon = capability.icon;
-
-            return (
-              <article key={capability.title}>
-                <Icon size={24} />
-
-                <h3>{capability.title}</h3>
-
-                <p>{capability.description}</p>
-              </article>
-            );
-          })}
-        </div>
-      </section>
+      <About />
+      <Expertise />
 
       <section className="container section" id="projects">
         <div className="section-heading">
