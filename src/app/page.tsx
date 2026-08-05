@@ -1,3 +1,5 @@
+import Navbar from "@/components/layout/Navbar";
+import Hero from "@/components/sections/Hero";
 import {
   ArrowUpRight,
   Cloud,
@@ -150,78 +152,8 @@ export default function Home() {
       <div className="background-glow background-glow-one" />
       <div className="background-glow background-glow-two" />
 
-      <header className="site-header">
-        <nav className="container nav">
-          <a className="brand" href="#top" aria-label="Gamefreak home">
-            <span className="brand-mark">G</span>
-            <span>Gamefreak</span>
-          </a>
-
-          <div className="nav-links">
-            <a href="#about">About</a>
-            <a href="#expertise">Expertise</a>
-            <a href="#projects">Projects</a>
-            <a href="#skills">Skills</a>
-          </div>
-
-          <a className="nav-contact" href="#contact">
-            Let&apos;s talk
-            <ArrowUpRight size={16} />
-          </a>
-        </nav>
-      </header>
-
-      <section className="container hero" id="top">
-        <div className="availability">
-          <span className="availability-dot" />
-          Open to professional opportunities
-        </div>
-
-        <p className="eyebrow">
-          <Sparkles size={16} />
-          Cybersecurity · AWS Cloud · Networking · Software
-        </p>
-
-        <h1>
-          Building secure, reliable and
-          <span> intelligent systems.</span>
-        </h1>
-
-        <p className="hero-copy">
-          I&apos;m Gamefreak, an IT and software professional working across
-          cybersecurity, AWS cloud infrastructure, computer networking,
-          technical support and modern application development.
-        </p>
-
-        <div className="hero-actions">
-          <a className="primary-button" href="#projects">
-            Explore my work
-            <ArrowUpRight size={18} />
-          </a>
-
-          <a
-            className="secondary-button"
-            href="https://github.com/ano-nym-ous257"
-            target="_blank"
-            rel="noreferrer"
-          >
-            <GitBranch size={18} />
-            GitHub
-          </a>
-        </div>
-
-        <div className="hero-meta">
-          <span>
-            <Globe2 size={16} />
-            gamefreakdev.xyz
-          </span>
-
-          <span>
-            <ShieldCheck size={16} />
-            Security-focused engineering
-          </span>
-        </div>
-      </section>
+      <Navbar />
+      <Hero />
 
       <section className="container section" id="about">
         <div className="section-heading">
