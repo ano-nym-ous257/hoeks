@@ -1761,3 +1761,18 @@ main {
     display: none;
   }
 }
+
+.terminal-active-line {
+  gap: 0;
+}
+
+.terminal-active-line .terminal-cursor {
+  margin-left: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .terminal-cursor {
+    animation: none;
+    opacity: 1;
+  }
+}
