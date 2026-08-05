@@ -1,4 +1,8 @@
+"use client";
+
+import { motion } from "motion/react";
 import { ArrowDownRight, GitBranch } from "lucide-react";
+import RotatingRole from "@/components/effects/RotatingRole";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { Terminal } from "@/components/ui/terminal";
 
@@ -32,11 +36,21 @@ export default function Hero() {
       </div>
 
       <div className="hero-layout">
-        <div className="hero-main">
-          <StatusBadge>Systems online · Open to opportunities</StatusBadge>
+        <motion.div
+          className="hero-main"
+          initial={{ opacity: 0, x: -36 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{
+            duration: 0.85,
+            ease: [0.22, 1, 0.36, 1],
+          }}
+        >
+          <StatusBadge>
+            Systems online · Open to opportunities
+          </StatusBadge>
 
           <p className="hero-kicker">
-            Secure infrastructure · Intelligent software
+            <RotatingRole />
           </p>
 
           <h1 className="editorial-title">
@@ -51,7 +65,10 @@ export default function Hero() {
           </p>
 
           <div className="hero-actions">
-            <a className="primary-button editorial-primary" href="#projects">
+            <a
+              className="primary-button editorial-primary"
+              href="#projects"
+            >
               Explore my work
               <ArrowDownRight size={18} />
             </a>
@@ -66,9 +83,19 @@ export default function Hero() {
               View GitHub
             </a>
           </div>
-        </div>
+        </motion.div>
 
-        <Terminal lines={terminalLines} />
+        <motion.div
+          initial={{ opacity: 0, x: 42, scale: 0.98 }}
+          animate={{ opacity: 1, x: 0, scale: 1 }}
+          transition={{
+            duration: 0.9,
+            delay: 0.16,
+            ease: [0.22, 1, 0.36, 1],
+          }}
+        >
+          <Terminal lines={terminalLines} />
+        </motion.div>
       </div>
 
       <div className="hero-bottom-line">
