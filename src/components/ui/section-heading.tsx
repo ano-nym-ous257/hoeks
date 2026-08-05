@@ -1,3 +1,4 @@
+import ParallaxText from "@/components/effects/ParallaxText";
 import { cn } from "@/lib/utils";
 
 interface SectionHeadingProps {
@@ -19,9 +20,12 @@ export function SectionHeading({
 }: SectionHeadingProps) {
   return (
     <div className={cn("design-section-heading", className)}>
-      <span className="design-section-number" aria-hidden="true">
+      <ParallaxText
+        className="design-section-number"
+        distance={30}
+      >
         {number}
-      </span>
+      </ParallaxText>
 
       <div className="design-section-label">
         <span>{label}</span>
