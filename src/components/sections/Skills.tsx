@@ -39,7 +39,7 @@ export default function Skills() {
           const Icon = group.icon;
 
           return (
-            <StaggerItem key={group.title}>
+            <StaggerItem index={groupIndex} key={group.title}>
               <article className="system-skill-module">
                 <div className="system-skill-header">
                   <div className="system-skill-title">
@@ -59,7 +59,7 @@ export default function Skills() {
                 </div>
 
                 <div className="system-skill-body">
-                  {group.skills.map((skill) => (
+                  {group.skills.map((skill, index) => (
                     <div className="system-skill-row" key={skill}>
                       <Check size={14} />
                       <span>{skill}</span>

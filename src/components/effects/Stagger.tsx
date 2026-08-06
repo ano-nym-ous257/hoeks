@@ -1,7 +1,4 @@
-"use client";
-
-import { motion } from "motion/react";
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
 interface StaggerGroupProps {
@@ -14,6 +11,7 @@ interface StaggerGroupProps {
 interface StaggerItemProps {
   children: ReactNode;
   className?: string;
+  index?: number;
 }
 
 export function StaggerGroup({
@@ -23,66 +21,35 @@ export function StaggerGroup({
   stagger = 0.12,
 }: StaggerGroupProps) {
   return (
-    <motion.div
-      className={className}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{
-        once: false,
-        amount: 0.1,
-        margin: "-5% 0px -5% 0px",
-      }}
-      variants={{
-        hidden: {
-          transition: {
-            staggerChildren: 0.06,
-            staggerDirection: -1,
-          },
-        },
-        visible: {
-          transition: {
-            delayChildren: delay,
-            staggerChildren: stagger,
-          },
-        },
-      }}
+    <div
+      className={cn("css-stagger-group", className)}
+      style={
+        {
+          "--stagger-delay": `${delay}s`,
+          "--stagger-step": `${stagger}s`,
+        } as CSSProperties
+      }
     >
       {children}
-    </motion.div>
+    </div>
   );
 }
 
 export function StaggerItem({
   children,
   className,
+  index = 0,
 }: StaggerItemProps) {
   return (
-    <motion.div
-      className={cn(className)}
-      variants={{
-        hidden: {
-          opacity: 0,
-          y: 38,
-          scale: 0.988,
-          filter: "blur(3px)",
-          transition: {
-            duration: 0.35,
-            ease: "easeOut",
-          },
-        },
-        visible: {
-          opacity: 1,
-          y: 0,
-          scale: 1,
-          filter: "blur(0px)",
-          transition: {
-            duration: 0.9,
-            ease: [0.22, 1, 0.36, 1],
-          },
-        },
-      }}
+    <div
+      className={cn("css-stagger-item", className)}
+      style={
+        {
+          "--stagger-index": index,
+        } as CSSProperties
+      }
     >
       {children}
-    </motion.div>
+    </div>
   );
 }

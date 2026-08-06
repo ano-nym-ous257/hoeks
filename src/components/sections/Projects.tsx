@@ -26,7 +26,7 @@ export default function Projects() {
         stagger={0.16}
       >
         {projects.map((project, index) => (
-          <StaggerItem key={project.title}>
+          <StaggerItem index={index} key={project.title}>
             <article
               className={`editorial-project ${
                 project.featured ? "editorial-project-featured" : ""
@@ -57,7 +57,7 @@ export default function Projects() {
 
               <div className="editorial-project-footer">
                 <div className="tag-list">
-                  {project.tags.map((tag) => (
+                  {project.tags.map((tag, index) => (
                     <span key={tag}>{tag}</span>
                   ))}
                 </div>

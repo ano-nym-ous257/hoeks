@@ -4072,3 +4072,66 @@ textarea:focus-visible {
     transform: none !important;
   }
 }
+
+/* Performance pass: CSS-only stagger reveals */
+
+.css-stagger-group {
+  --stagger-delay: 0s;
+  --stagger-step: 0.12s;
+}
+
+.css-stagger-item {
+  opacity: 0;
+  transform: translate3d(0, 38px, 0) scale(0.988);
+  filter: blur(3px);
+}
+
+@supports (animation-timeline: view()) {
+  .css-stagger-item {
+    animation-name: css-stagger-reveal;
+    animation-duration: 1ms;
+    animation-fill-mode: both;
+    animation-timing-function: linear;
+    animation-timeline: view();
+    animation-range: entry 5% cover 28%;
+    animation-delay:
+      calc(
+        var(--stagger-delay) +
+        (var(--stagger-index) * var(--stagger-step))
+      );
+    will-change: opacity, transform, filter;
+  }
+
+  @keyframes css-stagger-reveal {
+    from {
+      opacity: 0;
+      transform: translate3d(0, 38px, 0) scale(0.988);
+      filter: blur(3px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translate3d(0, 0, 0) scale(1);
+      filter: blur(0);
+    }
+  }
+}
+
+/* Fallback for browsers without view timelines */
+
+@supports not (animation-timeline: view()) {
+  .css-stagger-item {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .css-stagger-item {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+  }
+}

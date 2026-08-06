@@ -37,7 +37,7 @@ export default function Experience() {
           stagger={0.12}
         >
           {experienceItems.map((item, index) => (
-            <StaggerItem key={item.title}>
+            <StaggerItem index={index} key={item.title}>
               <article className="experience-entry">
                 <div className="experience-marker" aria-hidden="true">
                   <span>{String(index + 1).padStart(2, "0")}</span>
@@ -56,7 +56,7 @@ export default function Experience() {
                   </p>
 
                   <div className="experience-highlights">
-                    {item.highlights.map((highlight) => (
+                    {item.highlights.map((highlight, index) => (
                       <span key={highlight}>
                         <Check size={13} />
                         {highlight}
