@@ -7,7 +7,7 @@ import {
 } from "lucide-react";
 import RotatingRole from "@/components/effects/RotatingRole";
 import { StatusBadge } from "@/components/ui/status-badge";
-import { Terminal } from "@/components/ui/terminal";
+import DeferredTerminal from "@/components/ui/deferred-terminal";
 
 export default function Hero() {
   return (
@@ -128,7 +128,7 @@ export default function Hero() {
             ease: [0.22, 1, 0.36, 1],
           }}
         >
-          <Terminal />
+          <DeferredTerminal />
         </motion.div>
       </div>
 

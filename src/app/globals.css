@@ -3915,3 +3915,76 @@ textarea:focus-visible {
     transform: none !important;
   }
 }
+
+/* Performance pass: deferred terminal placeholder */
+
+.terminal-placeholder {
+  min-height: 430px;
+  cursor: default;
+}
+
+.terminal-placeholder-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.terminal-placeholder-controls span {
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.terminal-placeholder-banner {
+  margin: 0 0 24px;
+  color: #b94752;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: clamp(12px, 1.2vw, 16px);
+  font-weight: 700;
+  line-height: 1.2;
+  white-space: pre;
+}
+
+.terminal-placeholder-line {
+  height: 8px;
+  margin-top: 15px;
+  border-radius: 999px;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.055),
+      rgba(185, 71, 82, 0.16),
+      rgba(255, 255, 255, 0.055)
+    );
+  background-size: 220% 100%;
+  animation: terminal-placeholder-pulse 1.8s linear infinite;
+}
+
+.terminal-placeholder-line-long {
+  width: 84%;
+}
+
+.terminal-placeholder-line-medium {
+  width: 62%;
+}
+
+.terminal-placeholder-line-short {
+  width: 38%;
+}
+
+@keyframes terminal-placeholder-pulse {
+  from {
+    background-position: 100% 0;
+  }
+
+  to {
+    background-position: -120% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .terminal-placeholder-line {
+    animation: none;
+  }
+}
