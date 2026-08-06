@@ -3988,3 +3988,87 @@ textarea:focus-visible {
     animation: none;
   }
 }
+
+/* Performance pass: CSS-only rotating role */
+
+.rotating-role {
+  position: relative;
+  display: inline-grid;
+  overflow: hidden;
+  vertical-align: bottom;
+}
+
+.rotating-role-item {
+  grid-area: 1 / 1;
+  opacity: 0;
+  transform: translate3d(0, 16px, 0);
+  animation: rotating-role-cycle 10.4s
+    cubic-bezier(0.22, 1, 0.36, 1) infinite;
+  will-change: opacity, transform;
+}
+
+@keyframes rotating-role-cycle {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 16px, 0);
+  }
+
+  5%,
+  20% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+
+  25%,
+  100% {
+    opacity: 0;
+    transform: translate3d(0, -16px, 0);
+  }
+}
+
+/* Performance pass: CSS scroll-linked parallax */
+
+.css-parallax-text {
+  transform: translate3d(0, calc(var(--parallax-distance) * -1), 0);
+}
+
+@supports (animation-timeline: view()) {
+  .css-parallax-text {
+    animation-name: css-parallax-travel;
+    animation-duration: 1ms;
+    animation-fill-mode: both;
+    animation-timing-function: linear;
+    animation-timeline: view();
+    animation-range: entry 0% exit 100%;
+    will-change: transform;
+  }
+
+  @keyframes css-parallax-travel {
+    from {
+      transform:
+        translate3d(0, calc(var(--parallax-distance) * -1), 0);
+    }
+
+    to {
+      transform:
+        translate3d(0, var(--parallax-distance), 0);
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rotating-role-item {
+    animation: none;
+    opacity: 0;
+    transform: none;
+  }
+
+  .rotating-role-item:first-child {
+    opacity: 1;
+  }
+
+  .css-parallax-text {
+    animation: none !important;
+    transform: none !important;
+  }
+}
