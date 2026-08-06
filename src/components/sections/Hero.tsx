@@ -1,13 +1,11 @@
-"use client";
-
-import { motion } from "motion/react";
 import {
   ArrowDownRight,
   Download,
 } from "lucide-react";
+import HeroMotion from "@/components/effects/HeroMotion";
 import RotatingRole from "@/components/effects/RotatingRole";
-import { StatusBadge } from "@/components/ui/status-badge";
 import DeferredTerminal from "@/components/ui/deferred-terminal";
+import { StatusBadge } from "@/components/ui/status-badge";
 
 export default function Hero() {
   return (
@@ -17,20 +15,7 @@ export default function Hero() {
       </div>
 
       <div className="hero-layout">
-        <motion.div
-          className="hero-main"
-          initial={{ opacity: 0, x: -42, filter: "blur(4px)" }}
-          whileInView={{ opacity: 1, x: 0, filter: "blur(0px)" }}
-          viewport={{
-            once: false,
-            amount: 0.28,
-            margin: "-8% 0px -8% 0px",
-          }}
-          transition={{
-            duration: 1.05,
-            ease: [0.22, 1, 0.36, 1],
-          }}
-        >
+        <HeroMotion className="hero-main" variant="content">
           <StatusBadge>
             Systems online · Open to opportunities
           </StatusBadge>
@@ -50,7 +35,10 @@ export default function Hero() {
           </p>
 
           <div className="hero-actions">
-            <a className="primary-button editorial-primary" href="#projects">
+            <a
+              className="primary-button editorial-primary"
+              href="#projects"
+            >
               View projects
               <ArrowDownRight size={18} />
             </a>
@@ -101,51 +89,20 @@ export default function Hero() {
               </svg>
             </a>
           </div>
-        </motion.div>
+        </HeroMotion>
 
-        <motion.div
+        <HeroMotion
           className="hero-terminal-column"
-          initial={{
-            opacity: 0,
-            x: 46,
-            scale: 0.975,
-            filter: "blur(4px)",
-          }}
-          whileInView={{
-            opacity: 1,
-            x: 0,
-            scale: 1,
-            filter: "blur(0px)",
-          }}
-          viewport={{
-            once: false,
-            amount: 0.28,
-            margin: "-8% 0px -8% 0px",
-          }}
-          transition={{
-            duration: 1.1,
-            delay: 0.12,
-            ease: [0.22, 1, 0.36, 1],
-          }}
+          variant="terminal"
         >
           <DeferredTerminal />
-        </motion.div>
+        </HeroMotion>
       </div>
 
-      <motion.div
-        className="hero-bottom-line"
-        initial={{ opacity: 0, y: 18 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: false, amount: 0.3 }}
-        transition={{
-          duration: 0.85,
-          delay: 0.28,
-          ease: [0.22, 1, 0.36, 1],
-        }}
-      >
+      <HeroMotion className="hero-bottom-line" variant="footer">
         <span>gamefreakdev.xyz</span>
         <span>Cybersecurity · AWS · Networks · Software</span>
-      </motion.div>
+      </HeroMotion>
     </section>
   );
 }
