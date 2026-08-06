@@ -9,10 +9,7 @@ import { Terminal } from "@/components/ui/terminal";
 const terminalLines = [
   {
     command: "whoami",
-    output: [
-      "Gamefreak",
-      "Cybersecurity · AWS Cloud · Networking · Software",
-    ],
+    output: ["Gamefreak", "Security · Cloud · Networks · Software"],
   },
   {
     command: "aws sts get-caller-identity",
@@ -41,7 +38,7 @@ export default function Hero() {
           initial={{ opacity: 0, x: -36 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{
-            duration: 0.85,
+            duration: 1,
             ease: [0.22, 1, 0.36, 1],
           }}
         >
@@ -53,15 +50,14 @@ export default function Hero() {
             <RotatingRole />
           </p>
 
-          <h1 className="editorial-title">
-            Building systems
-            <span> made to perform, scale and endure.</span>
+          <h1 className="editorial-title hero-refined-title">
+            Building
+            <span>secure systems.</span>
           </h1>
 
-          <p className="hero-copy editorial-copy">
-            I work across cybersecurity, AWS cloud infrastructure, networking,
-            IT support and software engineering—combining security thinking
-            with practical technical execution.
+          <p className="hero-copy editorial-copy hero-refined-copy">
+            I engineer secure infrastructure, reliable networks and modern
+            software with a focus on cybersecurity and AWS.
           </p>
 
           <div className="hero-actions">
@@ -69,7 +65,7 @@ export default function Hero() {
               className="primary-button editorial-primary"
               href="#projects"
             >
-              Explore my work
+              View projects
               <ArrowDownRight size={18} />
             </a>
 
@@ -80,17 +76,18 @@ export default function Hero() {
               rel="noreferrer"
             >
               <GitBranch size={18} />
-              View GitHub
+              GitHub
             </a>
           </div>
         </motion.div>
 
         <motion.div
+          className="hero-terminal-column"
           initial={{ opacity: 0, x: 42, scale: 0.98 }}
           animate={{ opacity: 1, x: 0, scale: 1 }}
           transition={{
-            duration: 0.9,
-            delay: 0.16,
+            duration: 1.05,
+            delay: 0.14,
             ease: [0.22, 1, 0.36, 1],
           }}
         >
