@@ -4197,3 +4197,54 @@ textarea:focus-visible {
     font-size: clamp(1.85rem, 9.5vw, 2.65rem);
   }
 }
+
+/* Production mobile About section correction */
+
+@media (max-width: 900px) {
+  .editorial-about-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 44px;
+  }
+
+  .editorial-about-statement,
+  .editorial-about-copy {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .editorial-about-statement {
+    position: static;
+  }
+
+  .editorial-about-statement > p {
+    max-width: 100%;
+    font-size: clamp(2rem, 8vw, 3.2rem);
+    line-height: 1.04;
+    overflow-wrap: anywhere;
+  }
+
+  .editorial-about-copy {
+    font-size: 16px;
+    line-height: 1.7;
+  }
+
+  .editorial-about-copy > p {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 430px) {
+  .editorial-about-layout {
+    gap: 36px;
+  }
+
+  .editorial-about-statement > p {
+    font-size: clamp(1.9rem, 8.5vw, 2.75rem);
+  }
+
+  .editorial-about-copy {
+    font-size: 15px;
+  }
+}
