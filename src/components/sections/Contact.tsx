@@ -1,37 +1,86 @@
 "use client";
 
-import { ArrowUpRight, Mail, Send } from "lucide-react";
+import {
+  ArrowUpRight,
+  CheckCircle2,
+  Loader2,
+  Mail,
+  Send,
+} from "lucide-react";
 import { FormEvent, useState } from "react";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { StatusBadge } from "@/components/ui/status-badge";
 
 const EMAIL_ADDRESS = "alexagyei196@gmail.com";
+const FORMSPREE_ENDPOINT = "https://formspree.io/f/xyegzwop";
+
+type FormState = "idle" | "submitting" | "success" | "error";
 
 export default function Contact() {
-  const [submitted, setSubmitted] = useState(false);
+  const [formState, setFormState] = useState<FormState>("idle");
+  const [statusMessage, setStatusMessage] = useState("");
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    const form = new FormData(event.currentTarget);
-    const name = String(form.get("name") ?? "");
-    const email = String(form.get("email") ?? "");
-    const subject = String(form.get("subject") ?? "");
-    const message = String(form.get("message") ?? "");
+    const formElement = event.currentTarget;
+    const formData = new FormData(formElement);
 
-    const body = [
-      `Name: ${name}`,
-      `Email: ${email}`,
-      "",
-      message,
-    ].join("\n");
+    const name = String(formData.get("name") ?? "").trim();
+    const email = String(formData.get("email") ?? "").trim();
+    const subject = String(formData.get("subject") ?? "").trim();
+    const message = String(formData.get("message") ?? "").trim();
+    const website = String(formData.get("website") ?? "").trim();
 
-    const mailto = `mailto:${EMAIL_ADDRESS}?subject=${encodeURIComponent(
-      subject || "Portfolio enquiry",
-    )}&body=${encodeURIComponent(body)}`;
+    if (website) {
+      return;
+    }
 
-    setSubmitted(true);
-    window.location.href = mailto;
+    if (!name || !email || !subject || !message) {
+      setFormState("error");
+      setStatusMessage("Please complete all required fields.");
+      return;
+    }
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setFormState("error");
+      setStatusMessage("Please enter a valid email address.");
+      return;
+    }
+
+    if (message.length < 20) {
+      setFormState("error");
+      setStatusMessage("Please include a little more detail in your message.");
+      return;
+    }
+
+    setFormState("submitting");
+    setStatusMessage("");
+
+    try {
+      const response = await fetch(FORMSPREE_ENDPOINT, {
+        method: "POST",
+        body: formData,
+        headers: {
+          Accept: "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Form submission failed");
+      }
+
+      formElement.reset();
+      setFormState("success");
+      setStatusMessage(
+        "Your message has been sent successfully. I’ll get back to you soon.",
+      );
+    } catch {
+      setFormState("error");
+      setStatusMessage(
+        "The message could not be sent. Please email me directly instead.",
+      );
+    }
   }
 
   return (
@@ -53,6 +102,7 @@ export default function Contact() {
 
           <div>
             <p className="contact-label">Current focus</p>
+
             <h3>
               Cybersecurity, AWS cloud, networking, IT support and software
               engineering.
@@ -80,6 +130,15 @@ export default function Contact() {
               <span>GitHub profile</span>
               <ArrowUpRight size={17} />
             </a>
+
+            <a
+              href="https://www.linkedin.com/in/alex-agyei-81332a2b3/"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <span>LinkedIn profile</span>
+              <ArrowUpRight size={17} />
+            </a>
           </div>
 
           <div className="contact-system-note">
@@ -91,7 +150,20 @@ export default function Contact() {
           </div>
         </div>
 
-        <form className="contact-form" onSubmit={handleSubmit}>
+        <form
+          className="contact-form"
+          onSubmit={handleSubmit}
+          noValidate
+        >
+          <input
+            className="contact-honeypot"
+            type="text"
+            name="website"
+            tabIndex={-1}
+            autoComplete="off"
+            aria-hidden="true"
+          />
+
           <div className="contact-form-header">
             <div>
               <Send size={17} />
@@ -143,10 +215,45 @@ export default function Contact() {
             </label>
           </div>
 
-          <button className="contact-submit" type="submit">
-            {submitted ? "Opening email client" : "Send message"}
-            <ArrowUpRight size={18} />
+          <button
+            className="contact-submit"
+            type="submit"
+            disabled={formState === "submitting"}
+          >
+            {formState === "submitting" ? (
+              <>
+                Sending
+                <Loader2 className="contact-submit-spinner" size={18} />
+              </>
+            ) : formState === "success" ? (
+              <>
+                Sent
+                <CheckCircle2 size={18} />
+              </>
+            ) : (
+              <>
+                Send message
+                <ArrowUpRight size={18} />
+              </>
+            )}
           </button>
+
+          {statusMessage ? (
+            <p
+              className={`contact-form-status contact-form-status-${formState}`}
+              role="status"
+              aria-live="polite"
+            >
+              {statusMessage}
+            </p>
+          ) : null}
+
+          <p className="contact-form-fallback">
+            Prefer email?{" "}
+            <a href={`mailto:${EMAIL_ADDRESS}`}>
+              Contact me directly.
+            </a>
+          </p>
         </form>
       </div>
     </section>

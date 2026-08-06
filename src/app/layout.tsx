@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
@@ -14,30 +14,89 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://gamefreakdev.xyz"),
+
   title: {
-    default: "Gamefreak — Developer and Builder",
-    template: "%s | Gamefreak",
+    default: "Alex Agyei | IT Support, Cybersecurity, AWS & Networking",
+    template: "%s | Alex Agyei",
   },
+
   description:
-    "Gamefreak is a developer based in Accra, Ghana, building thoughtful web products, intelligent software and emerging technology experiences.",
+    "Portfolio of Alex Agyei, an IT support, cybersecurity, AWS cloud and networking professional building secure systems, reliable infrastructure and modern software.",
+
   keywords: [
-    "Gamefreak",
-    "developer",
-    "software engineer",
-    "web developer",
-    "Next.js developer",
-    "Ghana developer",
-    "Accra developer",
-    "portfolio",
+    "Alex Agyei",
+    "IT Support",
+    "Cybersecurity",
+    "AWS Cloud",
+    "Networking",
+    "Technical Support",
+    "Cloud Support",
+    "Next.js Developer",
+    "Remote Internship",
+    "Ghana",
   ],
-  openGraph: {
-    title: "Gamefreak — Developer and Builder",
-    description:
-      "Building thoughtful web products, intelligent software and emerging technology experiences.",
-    url: "https://gamefreakdev.xyz",
-    siteName: "Gamefreak",
-    type: "website",
+
+  authors: [
+    {
+      name: "Alex Agyei",
+      url: "https://gamefreakdev.xyz",
+    },
+  ],
+
+  creator: "Alex Agyei",
+  publisher: "Alex Agyei",
+
+  alternates: {
+    canonical: "/",
   },
+
+  openGraph: {
+    type: "website",
+    locale: "en_GH",
+    url: "https://gamefreakdev.xyz",
+    siteName: "Gamefreak Developer Portfolio",
+    title: "Alex Agyei | Building Secure Systems",
+    description:
+      "IT Support, Cybersecurity, AWS Cloud, Networking and Software Engineering portfolio.",
+    images: [
+      {
+        url: "/opengraph-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Alex Agyei — Gamefreak Developer Portfolio",
+      },
+    ],
+  },
+
+  twitter: {
+    card: "summary_large_image",
+    title: "Alex Agyei | Building Secure Systems",
+    description:
+      "IT Support, Cybersecurity, AWS Cloud, Networking and Software Engineering portfolio.",
+    images: ["/opengraph-image.png"],
+  },
+
+  icons: {
+    icon: [
+      {
+        url: "/favicon.ico",
+      },
+      {
+        url: "/icon.png",
+        type: "image/png",
+      },
+    ],
+    apple: "/apple-icon.png",
+  },
+
+  category: "technology",
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: "#07080b",
+  colorScheme: "dark",
 };
 
 export default function RootLayout({
@@ -46,11 +105,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      className={`${geistSans.variable} ${geistMono.variable}`}
-    >
-      <body>{children}</body>
+    <html lang="en">
+      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+        {children}
+      </body>
     </html>
   );
 }
