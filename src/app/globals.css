@@ -3452,3 +3452,43 @@ textarea:focus-visible {
 .terminal-ascii {
   font-size: clamp(4px, 0.48vw, 7px);
 }
+
+/* Hero professional links */
+
+.hero-icon-link {
+  width: 48px;
+  height: 48px;
+  display: inline-grid;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 999px;
+  color: #a8b0bb;
+  background: rgba(255, 255, 255, 0.018);
+  transition:
+    color var(--motion-medium) var(--motion-ease),
+    border-color var(--motion-medium) var(--motion-ease),
+    background var(--motion-medium) var(--motion-ease),
+    transform var(--motion-medium) var(--motion-ease);
+}
+
+.hero-icon-link:hover {
+  color: var(--foreground);
+  border-color: rgba(185, 71, 82, 0.4);
+  background: rgba(185, 71, 82, 0.08);
+  transform: translateY(-3px);
+}
+
+.hero-icon-link:active {
+  transform: scale(0.96);
+}
+
+@media (max-width: 560px) {
+  .hero-actions {
+    align-items: stretch;
+  }
+
+  .hero-icon-link {
+    width: 44px;
+    height: 44px;
+  }
+}
