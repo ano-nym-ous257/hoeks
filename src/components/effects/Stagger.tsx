@@ -27,9 +27,18 @@ export function StaggerGroup({
       className={className}
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, amount: 0.12 }}
+      viewport={{
+        once: false,
+        amount: 0.1,
+        margin: "-5% 0px -5% 0px",
+      }}
       variants={{
-        hidden: {},
+        hidden: {
+          transition: {
+            staggerChildren: 0.06,
+            staggerDirection: -1,
+          },
+        },
         visible: {
           transition: {
             delayChildren: delay,
@@ -53,15 +62,21 @@ export function StaggerItem({
       variants={{
         hidden: {
           opacity: 0,
-          y: 42,
-          scale: 0.985,
+          y: 38,
+          scale: 0.988,
+          filter: "blur(3px)",
+          transition: {
+            duration: 0.35,
+            ease: "easeOut",
+          },
         },
         visible: {
           opacity: 1,
           y: 0,
           scale: 1,
+          filter: "blur(0px)",
           transition: {
-            duration: 0.72,
+            duration: 0.9,
             ease: [0.22, 1, 0.36, 1],
           },
         },

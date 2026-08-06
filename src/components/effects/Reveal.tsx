@@ -21,9 +21,13 @@ export default function Reveal({
       className={className}
       initial={{ opacity: 0, y: distance }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.18 }}
+      viewport={{
+        once: false,
+        amount: 0.14,
+        margin: "-6% 0px -6% 0px",
+      }}
       transition={{
-        duration: 0.75,
+        duration: 0.95,
         delay,
         ease: [0.22, 1, 0.36, 1],
       }}

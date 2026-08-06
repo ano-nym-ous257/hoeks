@@ -1,7 +1,17 @@
 "use client";
 
 import { Circle } from "lucide-react";
-import { useEffect, useState } from "react";
+import {
+  motion,
+  useInView,
+  useReducedMotion,
+} from "motion/react";
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { cn } from "@/lib/utils";
 
 export interface TerminalLine {
@@ -26,16 +36,40 @@ export function Terminal({
   title = "gamefreak@portfolio:~",
   lines,
   className,
-  typingSpeed = 38,
-  lineDelay = 420,
+  typingSpeed = 34,
+  lineDelay = 360,
 }: TerminalProps) {
+  const terminalRef = useRef<HTMLDivElement>(null);
+  const isInView = useInView(terminalRef, {
+    amount: 0.35,
+    margin: "-8% 0px -8% 0px",
+  });
+  const reduceMotion = useReducedMotion();
+
   const [renderedLines, setRenderedLines] = useState<RenderedLine[]>([]);
   const [activeCommand, setActiveCommand] = useState("");
   const [isComplete, setIsComplete] = useState(false);
+  const runId = useRef(0);
+
+  const normalizeLines = useCallback(
+    () =>
+      lines.map((line) => ({
+        command: line.command ?? "",
+        output: Array.isArray(line.output)
+          ? line.output
+          : line.output
+            ? [line.output]
+            : [],
+      })),
+    [lines],
+  );
 
   useEffect(() => {
-    let cancelled = false;
+    runId.current += 1;
+    const currentRun = runId.current;
     const timers: ReturnType<typeof setTimeout>[] = [];
+
+    const isCancelled = () => currentRun !== runId.current;
 
     const wait = (duration: number) =>
       new Promise<void>((resolve) => {
@@ -43,11 +77,35 @@ export function Terminal({
         timers.push(timer);
       });
 
+    const reset = () => {
+      setRenderedLines([]);
+      setActiveCommand("");
+      setIsComplete(false);
+    };
+
+    if (!isInView) {
+      reset();
+
+      return () => {
+        timers.forEach(clearTimeout);
+      };
+    }
+
+    if (reduceMotion) {
+      setRenderedLines(normalizeLines());
+      setActiveCommand("");
+      setIsComplete(true);
+
+      return () => {
+        timers.forEach(clearTimeout);
+      };
+    }
+
     const typeText = async (text: string) => {
       setActiveCommand("");
 
       for (let index = 0; index < text.length; index += 1) {
-        if (cancelled) return;
+        if (isCancelled()) return;
 
         setActiveCommand(text.slice(0, index + 1));
         await wait(typingSpeed);
@@ -55,58 +113,27 @@ export function Terminal({
     };
 
     const runSequence = async () => {
-      const prefersReducedMotion = window.matchMedia(
-        "(prefers-reduced-motion: reduce)",
-      ).matches;
+      reset();
 
-      if (prefersReducedMotion) {
-        setRenderedLines(
-          lines.map((line) => ({
-            command: line.command ?? "",
-            output: Array.isArray(line.output)
-              ? line.output
-              : line.output
-                ? [line.output]
-                : [],
-          })),
-        );
-        setIsComplete(true);
-        return;
-      }
+      for (const line of normalizeLines()) {
+        if (isCancelled()) return;
 
-      setRenderedLines([]);
-      setActiveCommand("");
-      setIsComplete(false);
+        await typeText(line.command);
 
-      for (const line of lines) {
-        if (cancelled) return;
+        if (isCancelled()) return;
 
-        const command = line.command ?? "";
-        const output = Array.isArray(line.output)
-          ? line.output
-          : line.output
-            ? [line.output]
-            : [];
-
-        await typeText(command);
-
-        if (cancelled) return;
-
-        await wait(180);
+        await wait(160);
 
         setRenderedLines((current) => [
           ...current,
-          {
-            command,
-            output,
-          },
+          line,
         ]);
 
         setActiveCommand("");
         await wait(lineDelay);
       }
 
-      if (!cancelled) {
+      if (!isCancelled()) {
         setIsComplete(true);
       }
     };
@@ -114,13 +141,22 @@ export function Terminal({
     void runSequence();
 
     return () => {
-      cancelled = true;
+      runId.current += 1;
       timers.forEach(clearTimeout);
     };
-  }, [lineDelay, lines, typingSpeed]);
+  }, [
+    isInView,
+    lineDelay,
+    normalizeLines,
+    reduceMotion,
+    typingSpeed,
+  ]);
 
   return (
-    <div className={cn("terminal-window", className)}>
+    <motion.div
+      ref={terminalRef}
+      className={cn("terminal-window", className)}
+    >
       <div className="terminal-header">
         <div className="terminal-controls" aria-hidden="true">
           <Circle />
@@ -158,19 +194,14 @@ export function Terminal({
           </div>
         ))}
 
-        {!isComplete ? (
+        {isInView ? (
           <p className="terminal-command terminal-active-line">
             <span className="terminal-prompt">$</span>
-            <span>{activeCommand}</span>
+            {!isComplete ? <span>{activeCommand}</span> : null}
             <span className="terminal-cursor" aria-hidden="true" />
           </p>
-        ) : (
-          <p className="terminal-command terminal-active-line">
-            <span className="terminal-prompt">$</span>
-            <span className="terminal-cursor" aria-hidden="true" />
-          </p>
-        )}
+        ) : null}
       </div>
-    </div>
+    </motion.div>
   );
 }

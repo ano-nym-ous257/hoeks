@@ -25,6 +25,12 @@ const terminalLines = [
   },
 ];
 
+const viewport = {
+  once: false,
+  amount: 0.28,
+  margin: "-8% 0px -8% 0px",
+};
+
 export default function Hero() {
   return (
     <section className="container hero editorial-hero" id="top">
@@ -35,10 +41,11 @@ export default function Hero() {
       <div className="hero-layout">
         <motion.div
           className="hero-main"
-          initial={{ opacity: 0, x: -36 }}
-          animate={{ opacity: 1, x: 0 }}
+          initial={{ opacity: 0, x: -42, filter: "blur(4px)" }}
+          whileInView={{ opacity: 1, x: 0, filter: "blur(0px)" }}
+          viewport={viewport}
           transition={{
-            duration: 1,
+            duration: 1.05,
             ease: [0.22, 1, 0.36, 1],
           }}
         >
@@ -83,11 +90,22 @@ export default function Hero() {
 
         <motion.div
           className="hero-terminal-column"
-          initial={{ opacity: 0, x: 42, scale: 0.98 }}
-          animate={{ opacity: 1, x: 0, scale: 1 }}
+          initial={{
+            opacity: 0,
+            x: 46,
+            scale: 0.975,
+            filter: "blur(4px)",
+          }}
+          whileInView={{
+            opacity: 1,
+            x: 0,
+            scale: 1,
+            filter: "blur(0px)",
+          }}
+          viewport={viewport}
           transition={{
-            duration: 1.05,
-            delay: 0.14,
+            duration: 1.1,
+            delay: 0.12,
             ease: [0.22, 1, 0.36, 1],
           }}
         >
@@ -95,10 +113,20 @@ export default function Hero() {
         </motion.div>
       </div>
 
-      <div className="hero-bottom-line">
+      <motion.div
+        className="hero-bottom-line"
+        initial={{ opacity: 0, y: 18 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={viewport}
+        transition={{
+          duration: 0.85,
+          delay: 0.28,
+          ease: [0.22, 1, 0.36, 1],
+        }}
+      >
         <span>gamefreakdev.xyz</span>
         <span>Cybersecurity · AWS · Networks · Software</span>
-      </div>
+      </motion.div>
     </section>
   );
 }
