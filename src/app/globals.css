@@ -3153,3 +3153,243 @@ main {
     gap: 4px;
   }
 }
+
+/* Unified interaction motion */
+
+:root {
+  --motion-fast: 180ms;
+  --motion-medium: 320ms;
+  --motion-slow: 520ms;
+  --motion-ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Buttons */
+
+.primary-button,
+.secondary-button,
+.nav-contact,
+.contact-submit {
+  position: relative;
+  overflow: hidden;
+  transition:
+    color var(--motion-medium) var(--motion-ease),
+    background var(--motion-medium) var(--motion-ease),
+    border-color var(--motion-medium) var(--motion-ease),
+    transform var(--motion-medium) var(--motion-ease),
+    box-shadow var(--motion-medium) var(--motion-ease);
+}
+
+.primary-button::before,
+.contact-submit::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.12);
+  transform: translateX(-105%);
+  transition: transform var(--motion-slow) var(--motion-ease);
+  pointer-events: none;
+}
+
+.primary-button:hover::before,
+.contact-submit:hover::before {
+  transform: translateX(0);
+}
+
+.primary-button:hover,
+.contact-submit:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.24);
+}
+
+.primary-button:active,
+.secondary-button:active,
+.nav-contact:active,
+.contact-submit:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.primary-button svg,
+.secondary-button svg,
+.nav-contact svg,
+.contact-submit svg {
+  transition: transform var(--motion-medium) var(--motion-ease);
+}
+
+.primary-button:hover svg,
+.contact-submit:hover svg {
+  transform: translate(3px, 3px);
+}
+
+.secondary-button:hover svg,
+.nav-contact:hover svg {
+  transform: translate(3px, -3px);
+}
+
+/* Text links */
+
+.editorial-text-link,
+.editorial-project-link,
+.contact-details a,
+.footer a,
+.nav-links a {
+  position: relative;
+}
+
+.nav-links a::after,
+.footer a::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: -7px;
+  left: 0;
+  height: 1px;
+  background: #b94752;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform var(--motion-medium) var(--motion-ease);
+}
+
+.nav-links a:hover::after,
+.footer a:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+.editorial-text-link svg,
+.editorial-project-link svg,
+.contact-details a svg {
+  transition: transform var(--motion-medium) var(--motion-ease);
+}
+
+.editorial-text-link:hover svg,
+.editorial-project-link:hover svg,
+.contact-details a:hover svg {
+  transform: translate(4px, -4px);
+}
+
+/* Cards and modules */
+
+.editorial-capability,
+.editorial-project,
+.system-skill-module,
+.experience-entry,
+.skill-group {
+  transform-origin: center;
+  transition:
+    transform var(--motion-slow) var(--motion-ease),
+    border-color var(--motion-medium) var(--motion-ease),
+    background var(--motion-medium) var(--motion-ease),
+    box-shadow var(--motion-slow) var(--motion-ease);
+}
+
+.editorial-capability:hover,
+.system-skill-module:hover,
+.skill-group:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.22);
+}
+
+.editorial-project:hover {
+  transform: translateY(-7px) scale(1.004);
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.25);
+}
+
+.experience-entry:hover {
+  transform: translateX(7px);
+  box-shadow: 0 20px 55px rgba(0, 0, 0, 0.18);
+}
+
+/* Icons inside cards */
+
+.editorial-capability > svg,
+.system-skill-title svg,
+.skills-summary-panel svg {
+  transition:
+    transform var(--motion-slow) var(--motion-ease),
+    color var(--motion-medium) var(--motion-ease);
+}
+
+.editorial-capability:hover > svg,
+.system-skill-module:hover .system-skill-title svg {
+  transform: rotate(-7deg) scale(1.08);
+}
+
+/* Tags */
+
+.tag-list span,
+.skills-list span {
+  transition:
+    color var(--motion-fast) ease,
+    background var(--motion-fast) ease,
+    border-color var(--motion-fast) ease,
+    transform var(--motion-fast) ease;
+}
+
+.tag-list span:hover,
+.skills-list span:hover {
+  transform: translateY(-2px);
+  color: var(--foreground);
+  border-color: rgba(185, 71, 82, 0.38);
+  background: rgba(185, 71, 82, 0.08);
+}
+
+/* Terminal interaction */
+
+.terminal-window {
+  transition:
+    border-color var(--motion-medium) var(--motion-ease),
+    box-shadow var(--motion-slow) var(--motion-ease),
+    transform var(--motion-slow) var(--motion-ease);
+}
+
+.terminal-window:hover,
+.terminal-window:focus-within {
+  border-color: rgba(185, 71, 82, 0.34);
+  box-shadow:
+    0 36px 90px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(185, 71, 82, 0.06);
+  transform: translateY(-3px);
+}
+
+/* Keyboard accessibility */
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid #b94752;
+  outline-offset: 4px;
+}
+
+/* Disable hover movement where hover is unavailable */
+
+@media (hover: none) {
+  .primary-button:hover,
+  .contact-submit:hover,
+  .editorial-capability:hover,
+  .editorial-project:hover,
+  .system-skill-module:hover,
+  .experience-entry:hover,
+  .skill-group:hover,
+  .terminal-window:hover {
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .primary-button,
+  .secondary-button,
+  .nav-contact,
+  .contact-submit,
+  .editorial-capability,
+  .editorial-project,
+  .system-skill-module,
+  .experience-entry,
+  .skill-group,
+  .terminal-window,
+  .tag-list span,
+  .skills-list span {
+    transition-duration: 0.01ms !important;
+    transform: none !important;
+  }
+}
