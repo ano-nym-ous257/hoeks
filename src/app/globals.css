@@ -3393,3 +3393,62 @@ textarea:focus-visible {
     transform: none !important;
   }
 }
+
+/* Gamefreak terminal boot sequence */
+
+.terminal-ascii {
+  max-width: 100%;
+  margin: 0 0 18px;
+  overflow-x: auto;
+  color: #c75a65;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: clamp(5px, 0.68vw, 9px);
+  font-weight: 700;
+  line-height: 1.12;
+  white-space: pre;
+  scrollbar-width: none;
+}
+
+.terminal-ascii::-webkit-scrollbar {
+  display: none;
+}
+
+.terminal-entry-accent .terminal-output {
+  color: #c75a65;
+}
+
+.terminal-user-prompt {
+  flex: 0 0 auto;
+  margin-right: 9px;
+  color: #c75a65;
+  font-weight: 650;
+}
+
+.terminal-boot-active {
+  display: flex;
+  align-items: center;
+  padding-left: 0;
+}
+
+.terminal-input-line {
+  width: 100%;
+}
+
+.terminal-input-line input {
+  width: 100%;
+}
+
+@media (max-width: 560px) {
+  .terminal-ascii {
+    font-size: 5px;
+  }
+
+  .terminal-user-prompt {
+    font-size: 9px;
+  }
+}
+
+/* Wider GAMEFREAK terminal banner */
+.terminal-ascii {
+  font-size: clamp(4px, 0.48vw, 7px);
+}

@@ -1,10 +1,7 @@
 "use client";
 
 import { Circle } from "lucide-react";
-import {
-  useInView,
-  useReducedMotion,
-} from "motion/react";
+import { useInView, useReducedMotion } from "motion/react";
 import {
   FormEvent,
   KeyboardEvent,
@@ -25,31 +22,59 @@ interface TerminalProps {
   lines?: TerminalLine[];
   className?: string;
   typingSpeed?: number;
-  lineDelay?: number;
 }
 
 interface HistoryEntry {
-  command: string;
+  command?: string;
   output: string[];
-  tone?: "normal" | "success" | "error";
+  tone?: "normal" | "success" | "error" | "accent";
+  preformatted?: boolean;
 }
+
+const ASCII_BANNER = String.raw`
+  ██████╗  █████╗ ███╗   ███╗███████╗███████╗██████╗ ███████╗ █████╗ ██╗  ██╗
+ ██╔════╝ ██╔══██╗████╗ ████║██╔════╝██╔════╝██╔══██╗██╔════╝██╔══██╗██║ ██╔╝
+ ██║  ███╗███████║██╔████╔██║█████╗  █████╗  ██████╔╝█████╗  ███████║█████╔╝
+ ██║   ██║██╔══██║██║╚██╔╝██║██╔══╝  ██╔══╝  ██╔══██╗██╔══╝  ██╔══██║██╔═██╗
+ ╚██████╔╝██║  ██║██║ ╚═╝ ██║███████╗██║     ██║  ██║███████╗██║  ██║██║  ██╗
+  ╚═════╝ ╚═╝  ╚═╝╚═╝     ╚═╝╚══════╝╚═╝     ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝
+`;
 
 const COMMANDS = [
   "help",
   "whoami",
   "about",
+  "home",
   "projects",
   "skills",
   "experience",
   "contact",
+  "resume",
+  "linkedin",
   "github",
+  "email",
   "status",
   "pwd",
   "date",
+  "ls",
+  "cat about.txt",
+  "cat skills.txt",
+  "cat contact.txt",
+  "banner",
+  "coffee",
+  "sudo hire alex",
   "clear",
+  "exit",
 ] as const;
 
-type Command = (typeof COMMANDS)[number];
+const BOOT_STEPS = [
+  "Initializing Gamefreak Engineering Terminal...",
+  "Loading portfolio modules...",
+  "Checking secure connection...",
+  "Mounting project index...",
+  "Loading professional profile...",
+  "System ONLINE.",
+];
 
 function scrollToSection(id: string) {
   document.getElementById(id)?.scrollIntoView({
@@ -58,16 +83,19 @@ function scrollToSection(id: string) {
   });
 }
 
+function openExternal(url: string) {
+  window.open(url, "_blank", "noopener,noreferrer");
+}
+
 export function Terminal({
-  title = "gamefreak@portfolio:~",
-  lines = [],
+  title = "visitor@gamefreak:~",
   className,
-  typingSpeed = 30,
-  lineDelay = 300,
+  typingSpeed = 24,
 }: TerminalProps) {
   const terminalRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const bodyRef = useRef<HTMLDivElement>(null);
+  const runId = useRef(0);
 
   const isInView = useInView(terminalRef, {
     amount: 0.3,
@@ -76,29 +104,20 @@ export function Terminal({
 
   const reduceMotion = useReducedMotion();
 
-  const [introHistory, setIntroHistory] = useState<HistoryEntry[]>([]);
+  const [bootHistory, setBootHistory] = useState<HistoryEntry[]>([]);
   const [history, setHistory] = useState<HistoryEntry[]>([]);
-  const [activeCommand, setActiveCommand] = useState("");
+  const [activeBootText, setActiveBootText] = useState("");
+  const [bootComplete, setBootComplete] = useState(false);
+
   const [input, setInput] = useState("");
-  const [introComplete, setIntroComplete] = useState(false);
   const [commandHistory, setCommandHistory] = useState<string[]>([]);
   const [historyIndex, setHistoryIndex] = useState(-1);
 
-  const runId = useRef(0);
-
-  const normalizedIntro = useCallback(
-    () =>
-      lines.map((line) => ({
-        command: line.command ?? "",
-        output: Array.isArray(line.output)
-          ? line.output
-          : line.output
-            ? [line.output]
-            : [],
-        tone: "normal" as const,
-      })),
-    [lines],
-  );
+  const resetBoot = useCallback(() => {
+    setBootHistory([]);
+    setActiveBootText("");
+    setBootComplete(false);
+  }, []);
 
   useEffect(() => {
     runId.current += 1;
@@ -113,14 +132,8 @@ export function Terminal({
         timers.push(timer);
       });
 
-    const resetIntro = () => {
-      setIntroHistory([]);
-      setActiveCommand("");
-      setIntroComplete(false);
-    };
-
     if (!isInView) {
-      resetIntro();
+      resetBoot();
 
       return () => {
         timers.forEach(clearTimeout);
@@ -128,180 +141,370 @@ export function Terminal({
     }
 
     if (reduceMotion) {
-      setIntroHistory(normalizedIntro());
-      setIntroComplete(true);
+      setBootHistory([
+        {
+          output: [ASCII_BANNER],
+          tone: "accent",
+          preformatted: true,
+        },
+        {
+          output: [
+            "Gamefreak Engineering Terminal v1.0",
+            ...BOOT_STEPS,
+            'Type "help" to view available commands.',
+          ],
+          tone: "success",
+        },
+      ]);
+      setBootComplete(true);
 
       return () => {
         timers.forEach(clearTimeout);
       };
     }
 
-    const typeCommand = async (command: string) => {
-      setActiveCommand("");
+    async function typeLine(text: string) {
+      setActiveBootText("");
 
-      for (let index = 0; index < command.length; index += 1) {
+      for (let index = 0; index < text.length; index += 1) {
         if (cancelled()) return;
 
-        setActiveCommand(command.slice(0, index + 1));
+        setActiveBootText(text.slice(0, index + 1));
         await wait(typingSpeed);
       }
-    };
 
-    const playIntro = async () => {
-      resetIntro();
+      if (cancelled()) return;
 
-      for (const line of normalizedIntro()) {
+      setBootHistory((current) => [
+        ...current,
+        {
+          output: [text],
+        },
+      ]);
+
+      setActiveBootText("");
+    }
+
+    async function runBootSequence() {
+      resetBoot();
+
+      await wait(180);
+
+      setBootHistory([
+        {
+          output: [ASCII_BANNER],
+          tone: "accent",
+          preformatted: true,
+        },
+        {
+          output: ["Gamefreak Engineering Terminal v1.0"],
+          tone: "accent",
+        },
+      ]);
+
+      await wait(450);
+
+      for (const step of BOOT_STEPS) {
         if (cancelled()) return;
 
-        await typeCommand(line.command);
-        await wait(140);
-
-        if (cancelled()) return;
-
-        setIntroHistory((current) => [...current, line]);
-        setActiveCommand("");
-        await wait(lineDelay);
+        await typeLine(step);
+        await wait(170);
       }
 
-      if (!cancelled()) {
-        setIntroComplete(true);
-        setTimeout(() => inputRef.current?.focus(), 150);
-      }
-    };
+      if (cancelled()) return;
 
-    void playIntro();
+      setBootHistory((current) => [
+        ...current,
+        {
+          output: ['Type "help" to view available commands.'],
+          tone: "success",
+        },
+      ]);
+
+      setBootComplete(true);
+
+      const focusTimer = setTimeout(() => {
+        inputRef.current?.focus();
+      }, 180);
+
+      timers.push(focusTimer);
+    }
+
+    void runBootSequence();
 
     return () => {
       runId.current += 1;
       timers.forEach(clearTimeout);
     };
-  }, [
-    isInView,
-    lineDelay,
-    normalizedIntro,
-    reduceMotion,
-    typingSpeed,
-  ]);
+  }, [isInView, reduceMotion, resetBoot, typingSpeed]);
 
   useEffect(() => {
     bodyRef.current?.scrollTo({
       top: bodyRef.current.scrollHeight,
       behavior: "smooth",
     });
-  }, [activeCommand, history, introHistory]);
+  }, [activeBootText, bootHistory, history]);
+
+  function createNavigationResult(
+    command: string,
+    section: string,
+    label: string,
+  ): HistoryEntry {
+    scrollToSection(section);
+
+    return {
+      command,
+      output: [`Opening ${label} module...`, "Navigation request accepted."],
+      tone: "success",
+    };
+  }
 
   function executeCommand(rawCommand: string): HistoryEntry | null {
-    const command = rawCommand.trim().toLowerCase();
+    const command = rawCommand.trim();
+    const normalized = command.toLowerCase().replace(/\s+/g, " ");
 
-    if (!command) return null;
-
-    switch (command as Command) {
+    switch (normalized) {
       case "help":
         return {
-          command: rawCommand,
+          command,
           output: [
-            "Available commands:",
-            "help        Show available commands",
-            "whoami      Display profile information",
-            "about       Navigate to About",
-            "projects    Navigate to Projects",
-            "skills      Navigate to Skills",
-            "experience  Navigate to Experience",
-            "contact     Navigate to Contact",
-            "github      Open GitHub profile",
-            "status      Display system status",
-            "pwd         Display current path",
-            "date        Display current date and time",
-            "clear       Clear terminal history",
+            "AVAILABLE COMMANDS",
+            "",
+            "help               Show command directory",
+            "whoami             Display professional profile",
+            "home               Return to the hero",
+            "about              Open About",
+            "projects           Open selected projects",
+            "skills             Open technical skills",
+            "experience         Open experience log",
+            "contact            Open contact channel",
+            "resume             Open résumé PDF",
+            "linkedin           Open LinkedIn profile",
+            "github             Open GitHub profile",
+            "email              Start an email",
+            "status             Display system status",
+            "pwd                Print working directory",
+            "date               Display local date and time",
+            "ls                 List portfolio files",
+            "cat about.txt      Read professional summary",
+            "cat skills.txt     Read technical skills",
+            "cat contact.txt    Read contact information",
+            "banner             Print the Gamefreak banner",
+            "clear              Clear command history",
           ],
+          tone: "accent",
         };
 
       case "whoami":
         return {
-          command: rawCommand,
+          command,
           output: [
-            "Gamefreak",
-            "Cybersecurity · AWS Cloud · Networking · Software Engineering",
-            "Security-focused systems and infrastructure professional",
+            "Alex Agyei",
+            "IT Support · Cybersecurity · AWS Cloud · Networking",
+            "Building secure systems, reliable infrastructure, and modern software.",
+            "Available for remote paid internships and junior opportunities.",
           ],
           tone: "success",
         };
 
+      case "home":
+        return createNavigationResult(command, "top", "home");
+
       case "about":
-        scrollToSection("about");
-        return {
-          command: rawCommand,
-          output: ["Opening About module..."],
-          tone: "success",
-        };
+        return createNavigationResult(command, "about", "About");
 
       case "projects":
-        scrollToSection("projects");
-        return {
-          command: rawCommand,
-          output: ["Opening Projects module..."],
-          tone: "success",
-        };
+        return createNavigationResult(command, "projects", "Projects");
 
       case "skills":
-        scrollToSection("skills");
-        return {
-          command: rawCommand,
-          output: ["Opening Skills module..."],
-          tone: "success",
-        };
+        return createNavigationResult(command, "skills", "Skills");
 
       case "experience":
-        scrollToSection("experience");
+        return createNavigationResult(command, "experience", "Experience");
+
+      case "contact":
+        return createNavigationResult(command, "contact", "Contact");
+
+      case "resume":
+        window.setTimeout(() => {
+          openExternal("/resume.pdf");
+        }, 450);
+
         return {
-          command: rawCommand,
-          output: ["Opening Experience log..."],
+          command,
+          output: [
+            "Locating résumé.pdf...",
+            "Résumé loaded successfully.",
+            "Opening document...",
+          ],
           tone: "success",
         };
 
-      case "contact":
-        scrollToSection("contact");
+      case "linkedin":
+        window.setTimeout(() => {
+          openExternal(
+            "https://www.linkedin.com/in/alex-agyei-81332a2b3/",
+          );
+        }, 450);
+
         return {
-          command: rawCommand,
-          output: ["Opening secure contact channel..."],
+          command,
+          output: [
+            "Connecting to LinkedIn...",
+            "Profile located.",
+            "Redirecting...",
+          ],
           tone: "success",
         };
 
       case "github":
-        window.open(
-          "https://github.com/ano-nym-ous257",
-          "_blank",
-          "noopener,noreferrer",
-        );
+        window.setTimeout(() => {
+          openExternal("https://github.com/ano-nym-ous257");
+        }, 450);
 
         return {
-          command: rawCommand,
-          output: ["Opening GitHub profile..."],
+          command,
+          output: [
+            "Connecting to GitHub...",
+            "Repository index loaded.",
+            "Redirecting...",
+          ],
+          tone: "success",
+        };
+
+      case "email":
+        window.setTimeout(() => {
+          window.location.href =
+            "mailto:alexagyei196@gmail.com?subject=Portfolio%20Enquiry";
+        }, 350);
+
+        return {
+          command,
+          output: [
+            "Opening secure email channel...",
+            "Recipient: alexagyei196@gmail.com",
+          ],
           tone: "success",
         };
 
       case "status":
         return {
-          command: rawCommand,
+          command,
           output: [
             "Security       ONLINE",
             "AWS            CONNECTED",
             "Network        HEALTHY",
             "Portfolio      RUNNING",
+            "Résumé         AVAILABLE",
+            "Availability   OPEN TO OPPORTUNITIES",
           ],
           tone: "success",
         };
 
       case "pwd":
         return {
-          command: rawCommand,
+          command,
           output: ["/home/gamefreak/portfolio"],
         };
 
       case "date":
         return {
-          command: rawCommand,
+          command,
           output: [new Date().toLocaleString()],
+        };
+
+      case "ls":
+        return {
+          command,
+          output: [
+            "about.txt",
+            "skills.txt",
+            "contact.txt",
+            "resume.pdf",
+            "projects/",
+            "experience/",
+            "socials/",
+          ],
+          tone: "accent",
+        };
+
+      case "cat about.txt":
+        return {
+          command,
+          output: [
+            "Alex Agyei is an early-career IT professional focused on",
+            "cybersecurity, AWS cloud computing, networking, IT support,",
+            "and modern software engineering.",
+          ],
+        };
+
+      case "cat skills.txt":
+        return {
+          command,
+          output: [
+            "Cybersecurity",
+            "AWS Cloud",
+            "Networking",
+            "IT Support",
+            "Windows and macOS troubleshooting",
+            "Git and GitHub",
+            "React and Next.js",
+            "TypeScript and JavaScript",
+            "Command-line tools",
+          ],
+          tone: "accent",
+        };
+
+      case "cat contact.txt":
+        return {
+          command,
+          output: [
+            "Alex Agyei",
+            "Email: alexagyei196@gmail.com",
+            "Phone: +233 552 790 089",
+            "Portfolio: gamefreakdev.xyz",
+            "LinkedIn: alex-agyei-81332a2b3",
+            "GitHub: ano-nym-ous257",
+          ],
+        };
+
+      case "banner":
+        return {
+          command,
+          output: [ASCII_BANNER],
+          tone: "accent",
+          preformatted: true,
+        };
+
+      case "coffee":
+        return {
+          command,
+          output: [
+            "☕ Loading caffeine...",
+            "Developer productivity increased by 42%.",
+          ],
+          tone: "success",
+        };
+
+      case "sudo hire alex":
+        return {
+          command,
+          output: [
+            "Authenticating recruiter...",
+            "Permission granted.",
+            "Excellent choice.",
+          ],
+          tone: "success",
+        };
+
+      case "exit":
+        return {
+          command,
+          output: [
+            "Session termination denied.",
+            "There is still more to explore.",
+          ],
+          tone: "accent",
         };
 
       case "clear":
@@ -310,9 +513,9 @@ export function Terminal({
 
       default:
         return {
-          command: rawCommand,
+          command,
           output: [
-            `Command not found: ${rawCommand}`,
+            `Command not found: ${command}`,
             'Type "help" to view available commands.',
           ],
           tone: "error",
@@ -345,13 +548,15 @@ export function Terminal({
 
       if (commandHistory.length === 0) return;
 
-      const nextIndex =
-        historyIndex < commandHistory.length - 1
-          ? historyIndex + 1
-          : historyIndex;
+      const nextIndex = Math.min(
+        historyIndex + 1,
+        commandHistory.length - 1,
+      );
 
       setHistoryIndex(nextIndex);
-      setInput(commandHistory[commandHistory.length - 1 - nextIndex] ?? "");
+      setInput(
+        commandHistory[commandHistory.length - 1 - nextIndex] ?? "",
+      );
     }
 
     if (event.key === "ArrowDown") {
@@ -366,14 +571,17 @@ export function Terminal({
       const nextIndex = historyIndex - 1;
 
       setHistoryIndex(nextIndex);
-      setInput(commandHistory[commandHistory.length - 1 - nextIndex] ?? "");
+      setInput(
+        commandHistory[commandHistory.length - 1 - nextIndex] ?? "",
+      );
     }
 
     if (event.key === "Tab") {
       event.preventDefault();
 
+      const normalizedInput = input.toLowerCase();
       const match = COMMANDS.find((command) =>
-        command.startsWith(input.toLowerCase()),
+        command.startsWith(normalizedInput),
       );
 
       if (match) {
@@ -382,13 +590,15 @@ export function Terminal({
     }
   }
 
-  const visibleHistory = [...introHistory, ...history];
-
   return (
     <div
       ref={terminalRef}
       className={cn("terminal-window terminal-interactive", className)}
-      onClick={() => inputRef.current?.focus()}
+      onClick={() => {
+        if (bootComplete) {
+          inputRef.current?.focus();
+        }
+      }}
     >
       <div className="terminal-header">
         <div className="terminal-controls" aria-hidden="true">
@@ -405,48 +615,41 @@ export function Terminal({
       <div
         ref={bodyRef}
         className="terminal-body"
-        aria-label="Interactive portfolio terminal"
+        aria-label="Interactive Gamefreak engineering terminal"
         aria-live="polite"
       >
-        {visibleHistory.map((entry, index) => (
-          <div
-            className={`terminal-entry terminal-entry-${entry.tone ?? "normal"}`}
-            key={`${entry.command}-${index}`}
-          >
-            {entry.command ? (
-              <p className="terminal-command">
-                <span className="terminal-prompt">$</span>
-                {entry.command}
-              </p>
-            ) : null}
-
-            {entry.output.map((output, outputIndex) => (
-              <p
-                className="terminal-output"
-                key={`${output}-${outputIndex}`}
-              >
-                {output}
-              </p>
-            ))}
-          </div>
+        {bootHistory.map((entry, index) => (
+          <TerminalEntry
+            entry={entry}
+            index={index}
+            key={`boot-${index}`}
+          />
         ))}
 
-        {!introComplete ? (
-          <p className="terminal-command terminal-active-line">
-            <span className="terminal-prompt">$</span>
-            <span>{activeCommand}</span>
+        {!bootComplete && activeBootText ? (
+          <p className="terminal-output terminal-boot-active">
+            {activeBootText}
             <span className="terminal-cursor" aria-hidden="true" />
           </p>
-        ) : (
-          <form
-            className="terminal-input-line"
-            onSubmit={handleSubmit}
-          >
+        ) : null}
+
+        {history.map((entry, index) => (
+          <TerminalEntry
+            entry={entry}
+            index={index}
+            key={`history-${entry.command}-${index}`}
+          />
+        ))}
+
+        {bootComplete ? (
+          <form className="terminal-input-line" onSubmit={handleSubmit}>
             <label className="sr-only" htmlFor="terminal-command">
               Enter terminal command
             </label>
 
-            <span className="terminal-prompt">$</span>
+            <span className="terminal-user-prompt">
+              visitor@gamefreak:~$
+            </span>
 
             <input
               ref={inputRef}
@@ -463,13 +666,57 @@ export function Terminal({
 
             <span className="terminal-cursor" aria-hidden="true" />
           </form>
-        )}
+        ) : null}
       </div>
 
       <div className="terminal-footer">
         <span>Type “help” for commands</span>
-        <span>Tab: autocomplete · ↑↓: history</span>
+        <span>Tab autocomplete · ↑↓ history</span>
       </div>
+    </div>
+  );
+}
+
+function TerminalEntry({
+  entry,
+  index,
+}: {
+  entry: HistoryEntry;
+  index: number;
+}) {
+  return (
+    <div
+      className={`terminal-entry terminal-entry-${
+        entry.tone ?? "normal"
+      }`}
+      key={`${entry.command}-${index}`}
+    >
+      {entry.command ? (
+        <p className="terminal-command">
+          <span className="terminal-user-prompt">
+            visitor@gamefreak:~$
+          </span>
+          {entry.command}
+        </p>
+      ) : null}
+
+      {entry.output.map((output, outputIndex) =>
+        entry.preformatted ? (
+          <pre
+            className="terminal-ascii"
+            key={`${outputIndex}-${output.slice(0, 12)}`}
+          >
+            {output}
+          </pre>
+        ) : (
+          <p
+            className="terminal-output"
+            key={`${output}-${outputIndex}`}
+          >
+            {output || "\u00A0"}
+          </p>
+        ),
+      )}
     </div>
   );
 }
