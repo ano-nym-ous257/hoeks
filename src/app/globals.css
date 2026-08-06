@@ -2809,3 +2809,162 @@ main {
     font-size: clamp(3.2rem, 16vw, 5.8rem);
   }
 }
+
+/* Spacing and border refinement */
+
+.editorial-section {
+  padding-block: 180px;
+}
+
+.editorial-about-layout,
+.editorial-capabilities,
+.editorial-projects,
+.system-status-bar,
+.experience-console,
+.contact-console {
+  margin-top: 88px;
+}
+
+/* About: let typography do the work */
+
+.editorial-principles {
+  border-top-color: rgba(255, 255, 255, 0.055);
+}
+
+.editorial-principle {
+  border-bottom-color: rgba(255, 255, 255, 0.055);
+}
+
+/* Expertise: softer structure */
+
+.editorial-capabilities {
+  gap: 18px;
+  border: 0;
+}
+
+.editorial-capability {
+  border: 1px solid rgba(255, 255, 255, 0.065);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.018);
+}
+
+.editorial-capability-featured {
+  border-color: rgba(185, 71, 82, 0.24);
+  background:
+    linear-gradient(
+      135deg,
+      rgba(185, 71, 82, 0.18),
+      rgba(255, 255, 255, 0.018)
+    );
+}
+
+.editorial-capability-featured,
+.editorial-capability-featured p,
+.editorial-capability-featured svg {
+  color: inherit;
+}
+
+.editorial-capability-featured > svg {
+  color: #b94752;
+}
+
+/* Skills: reduce dashboard heaviness */
+
+.system-status-bar {
+  border-color: rgba(255, 255, 255, 0.065);
+  border-radius: 16px 16px 0 0;
+}
+
+.system-skills-grid {
+  gap: 14px;
+  margin-top: 14px;
+  border-left: 0;
+}
+
+.system-skill-module {
+  border: 1px solid rgba(255, 255, 255, 0.065);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.system-skill-header,
+.system-skill-footer {
+  border-color: rgba(255, 255, 255, 0.055);
+}
+
+.system-skill-row {
+  border-bottom-color: rgba(255, 255, 255, 0.04);
+}
+
+.skills-summary-panel {
+  margin-top: 24px;
+  border-radius: 16px;
+  border-color: rgba(185, 71, 82, 0.2);
+}
+
+/* Experience: remove the large outer box */
+
+.experience-console {
+  border: 0;
+  background: transparent;
+}
+
+.experience-console-header {
+  margin-bottom: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.065);
+  border-radius: 16px;
+}
+
+.experience-entry {
+  margin-bottom: 14px;
+  padding: 34px 55px 34px 0;
+  border: 1px solid rgba(255, 255, 255, 0.055);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.012);
+}
+
+.experience-timeline > div {
+  border-bottom: 0;
+}
+
+.experience-marker::before {
+  background: rgba(255, 255, 255, 0.055);
+}
+
+/* Contact: keep the form, soften the frame */
+
+.contact-console {
+  border-color: rgba(255, 255, 255, 0.065);
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.contact-information {
+  border-right-color: rgba(255, 255, 255, 0.055);
+}
+
+/* General section separation */
+
+.section {
+  border-top-color: rgba(255, 255, 255, 0.055);
+}
+
+@media (max-width: 760px) {
+  .editorial-section {
+    padding-block: 120px;
+  }
+
+  .editorial-about-layout,
+  .editorial-capabilities,
+  .editorial-projects,
+  .system-status-bar,
+  .experience-console,
+  .contact-console {
+    margin-top: 58px;
+  }
+
+  .editorial-capabilities,
+  .system-skills-grid {
+    gap: 12px;
+  }
+}
