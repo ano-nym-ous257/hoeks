@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://gamefreakdev.xyz"),
+  metadataBase: new URL("https://www.gamefreakdev.xyz"),
 
   title: {
     default: "Alex Agyei | IT Support, Cybersecurity, AWS & Networking",
@@ -39,7 +39,7 @@ export const metadata: Metadata = {
   authors: [
     {
       name: "Alex Agyei",
-      url: "https://gamefreakdev.xyz",
+      url: "https://www.gamefreakdev.xyz",
     },
   ],
 
@@ -53,7 +53,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_GH",
-    url: "https://gamefreakdev.xyz",
+    url: "https://www.gamefreakdev.xyz",
     siteName: "Gamefreak Developer Portfolio",
     title: "Alex Agyei | Building Secure Systems",
     description:

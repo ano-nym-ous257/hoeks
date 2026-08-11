@@ -6,7 +6,7 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: "*",
       allow: "/",
     },
-    sitemap: "https://gamefreakdev.xyz/sitemap.xml",
-    host: "https://gamefreakdev.xyz",
+    sitemap: "https://www.gamefreakdev.xyz/sitemap.xml",
+    host: "https://www.gamefreakdev.xyz",
   };
 }
