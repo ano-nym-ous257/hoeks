@@ -22,6 +22,10 @@ export default function Home() {
       <Experience />
       <Contact />
       <Footer />
+      <a className="sticky-contact" href="#contact" aria-label="Start a conversation">
+        <span aria-hidden="true">↗</span>
+        Start a conversation
+      </a>
     </main>
   );
 }

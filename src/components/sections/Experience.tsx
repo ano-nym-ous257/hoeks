@@ -56,7 +56,7 @@ export default function Experience() {
                   </p>
 
                   <div className="experience-highlights">
-                    {item.highlights.map((highlight, index) => (
+                    {item.highlights.map((highlight) => (
                       <span key={highlight}>
                         <Check size={13} />
                         {highlight}

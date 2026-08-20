@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 
 export const alt =
-  "Alex Agyei — IT Support, Cybersecurity, AWS Cloud and Networking";
+  "Gamefreak — Network Engineering, Cybersecurity and AWS Cloud Infrastructure";
 
 export const size = {
   width: 1200,
@@ -37,7 +37,7 @@ export default function OpenGraphImage() {
             width: 430,
             height: 430,
             display: "flex",
-            border: "2px solid rgba(185,71,82,0.38)",
+            border: "2px solid rgba(232,93,93,0.38)",
             transform: "rotate(14deg)",
           }}
         />
@@ -67,7 +67,7 @@ export default function OpenGraphImage() {
         >
           <span
             style={{
-              color: "#b94752",
+              color: "#e85d5d",
             }}
           >
             GF
@@ -86,14 +86,14 @@ export default function OpenGraphImage() {
           <div
             style={{
               display: "flex",
-              color: "#b94752",
+              color: "#e85d5d",
               fontSize: 19,
               fontWeight: 700,
               letterSpacing: "0.12em",
               marginBottom: 24,
             }}
           >
-            ALEX AGYEI
+            GAMEFREAK ENGINEERING
           </div>
 
           <div
@@ -124,7 +124,7 @@ export default function OpenGraphImage() {
               fontSize: 23,
             }}
           >
-            IT Support · Cybersecurity · AWS Cloud · Networking
+            Network Engineering · Cybersecurity · AWS Cloud Infrastructure
           </div>
         </div>
 

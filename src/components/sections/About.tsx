@@ -25,6 +25,12 @@ export default function About() {
             networking, technical support and software engineering.
           </p>
 
+          <p className="editorial-remote-note">
+            Async remote, documentation-first and UTC-friendly. I collaborate
+            effectively with distributed teams across US and European
+            timezones.
+          </p>
+
           <a className="editorial-text-link" href="#projects">
             Explore selected work
             <ArrowUpRight size={17} />

@@ -1,9 +1,13 @@
 export default function Footer() {
   return (
     <footer className="container footer">
-      <p>© {new Date().getFullYear()} Gamefreak.</p>
+      <div className="footer-identity">
+        <p>© {new Date().getFullYear()} Gamefreak.</p>
+        <p>Remote • Available for UTC / EST overlap</p>
+        <p>AWS • Cybersecurity • Network Engineering • gamefreakdev.xyz</p>
+      </div>
 
-      <div>
+      <div className="footer-links">
         <a
           href="https://github.com/ano-nym-ous257"
           target="_blank"

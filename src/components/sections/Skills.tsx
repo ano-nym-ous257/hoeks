@@ -59,7 +59,7 @@ export default function Skills() {
                 </div>
 
                 <div className="system-skill-body">
-                  {group.skills.map((skill, index) => (
+                  {group.skills.map((skill) => (
                     <div className="system-skill-row" key={skill}>
                       <Check size={14} />
                       <span>{skill}</span>

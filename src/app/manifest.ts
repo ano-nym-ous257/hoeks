@@ -2,10 +2,10 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Alex Agyei — Gamefreak Developer Portfolio",
+    name: "Gamefreak Developer Portfolio",
     short_name: "Gamefreak",
     description:
-      "Portfolio of Alex Agyei covering IT support, cybersecurity, AWS cloud, networking and software engineering.",
+      "Network and cloud engineering portfolio focused on secure systems, AWS infrastructure and cybersecurity.",
     start_url: "/",
     display: "standalone",
     background_color: "#07080b",

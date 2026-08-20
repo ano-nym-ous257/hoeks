@@ -57,7 +57,7 @@ export default function Projects() {
 
               <div className="editorial-project-footer">
                 <div className="tag-list">
-                  {project.tags.map((tag, index) => (
+                  {project.tags.map((tag) => (
                     <span key={tag}>{tag}</span>
                   ))}
                 </div>

@@ -16,35 +16,34 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://www.gamefreakdev.xyz"),
 
   title: {
-    default: "Alex Agyei | IT Support, Cybersecurity, AWS & Networking",
-    template: "%s | Alex Agyei",
+    default:
+      "Gamefreak - Network Engineer | Cybersecurity | AWS Cloud Infrastructure",
+    template: "%s | Gamefreak Engineering",
   },
 
   description:
-    "Portfolio of Alex Agyei, an IT support, cybersecurity, AWS cloud and networking professional building secure systems, reliable infrastructure and modern software.",
+    "Network and cloud engineer specializing in secure systems, AWS architecture, cybersecurity and reliable infrastructure for remote teams.",
 
   keywords: [
-    "Alex Agyei",
-    "IT Support",
-    "Cybersecurity",
-    "AWS Cloud",
-    "Networking",
-    "Technical Support",
-    "Cloud Support",
-    "Next.js Developer",
-    "Remote Internship",
-    "Ghana",
+    "Gamefreak",
+    "AWS Network Engineer",
+    "Cybersecurity Engineer",
+    "Secure Systems Architect",
+    "Infrastructure Engineer",
+    "AWS Cloud Infrastructure",
+    "Network Engineering",
+    "Remote Engineer",
   ],
 
   authors: [
     {
-      name: "Alex Agyei",
+      name: "Gamefreak",
       url: "https://www.gamefreakdev.xyz",
     },
   ],
 
-  creator: "Alex Agyei",
-  publisher: "Alex Agyei",
+  creator: "Gamefreak",
+  publisher: "Gamefreak",
 
   alternates: {
     canonical: "/",
@@ -52,27 +51,27 @@ export const metadata: Metadata = {
 
   openGraph: {
     type: "website",
-    locale: "en_GH",
+    locale: "en_US",
     url: "https://www.gamefreakdev.xyz",
     siteName: "Gamefreak Developer Portfolio",
-    title: "Alex Agyei | Building Secure Systems",
+    title: "Gamefreak | Network Engineering, Cybersecurity & AWS",
     description:
-      "IT Support, Cybersecurity, AWS Cloud, Networking and Software Engineering portfolio.",
+      "Secure systems, AWS cloud infrastructure, cybersecurity and network engineering for modern teams.",
     images: [
       {
         url: "/opengraph-image.png",
         width: 1200,
         height: 630,
-        alt: "Alex Agyei — Gamefreak Developer Portfolio",
+        alt: "Gamefreak Developer Portfolio",
       },
     ],
   },
 
   twitter: {
     card: "summary_large_image",
-    title: "Alex Agyei | Building Secure Systems",
+    title: "Gamefreak | Network Engineering, Cybersecurity & AWS",
     description:
-      "IT Support, Cybersecurity, AWS Cloud, Networking and Software Engineering portfolio.",
+      "Secure systems, AWS cloud infrastructure, cybersecurity and network engineering for modern teams.",
     images: ["/opengraph-image.png"],
   },
 

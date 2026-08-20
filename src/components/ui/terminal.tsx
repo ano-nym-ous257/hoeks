@@ -62,7 +62,7 @@ const COMMANDS = [
   "cat contact.txt",
   "banner",
   "coffee",
-  "sudo hire alex",
+  "sudo hire gamefreak",
   "clear",
   "exit",
 ] as const;
@@ -133,7 +133,8 @@ export function Terminal({
       });
 
     if (!isInView) {
-      resetBoot();
+      const resetTimer = setTimeout(resetBoot, 0);
+      timers.push(resetTimer);
 
       return () => {
         timers.forEach(clearTimeout);
@@ -141,22 +142,26 @@ export function Terminal({
     }
 
     if (reduceMotion) {
-      setBootHistory([
-        {
-          output: [ASCII_BANNER],
-          tone: "accent",
-          preformatted: true,
-        },
-        {
-          output: [
-            "Gamefreak Engineering Terminal v1.0",
-            ...BOOT_STEPS,
-            'Type "help" to view available commands.',
-          ],
-          tone: "success",
-        },
-      ]);
-      setBootComplete(true);
+      const reducedMotionTimer = setTimeout(() => {
+        setBootHistory([
+          {
+            output: [ASCII_BANNER],
+            tone: "accent",
+            preformatted: true,
+          },
+          {
+            output: [
+              "Gamefreak Engineering Terminal v1.0",
+              ...BOOT_STEPS,
+              'Type "help" to view available commands.',
+            ],
+            tone: "success",
+          },
+        ]);
+        setBootComplete(true);
+      }, 0);
+
+      timers.push(reducedMotionTimer);
 
       return () => {
         timers.forEach(clearTimeout);
@@ -299,10 +304,10 @@ export function Terminal({
         return {
           command,
           output: [
-            "Alex Agyei",
-            "IT Support · Cybersecurity · AWS Cloud · Networking",
-            "Building secure systems, reliable infrastructure, and modern software.",
-            "Available for remote paid internships and junior opportunities.",
+            "Gamefreak",
+            "Network Engineering · Cybersecurity · AWS Cloud Infrastructure",
+            "Building secure systems, reliable infrastructure and modern software.",
+            "Remote-first · Documentation-first · UTC / EST overlap",
           ],
           tone: "success",
         };
@@ -382,7 +387,7 @@ export function Terminal({
           command,
           output: [
             "Opening secure email channel...",
-            "Recipient: alexagyei196@gmail.com",
+            "Professional email channel ready.",
           ],
           tone: "success",
         };
@@ -432,7 +437,7 @@ export function Terminal({
         return {
           command,
           output: [
-            "Alex Agyei is an early-career IT professional focused on",
+            "Gamefreak is an early-career IT professional focused on",
             "cybersecurity, AWS cloud computing, networking, IT support,",
             "and modern software engineering.",
           ],
@@ -459,9 +464,8 @@ export function Terminal({
         return {
           command,
           output: [
-            "Alex Agyei",
-            "Email: alexagyei196@gmail.com",
-            "Phone: +233 552 790 089",
+            "Gamefreak",
+            "Email: available through the contact form",
             "Portfolio: gamefreakdev.xyz",
             "LinkedIn: alex-agyei-81332a2b3",
             "GitHub: ano-nym-ous257",
@@ -486,7 +490,7 @@ export function Terminal({
           tone: "success",
         };
 
-      case "sudo hire alex":
+      case "sudo hire gamefreak":
         return {
           command,
           output: [

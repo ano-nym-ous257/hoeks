@@ -118,7 +118,7 @@ export default function Contact() {
           <div className="contact-details">
             <a href={`mailto:${EMAIL_ADDRESS}`}>
               <Mail size={18} />
-              <span>{EMAIL_ADDRESS}</span>
+              <span>Send a professional email</span>
               <ArrowUpRight size={17} />
             </a>
 
