@@ -4638,3 +4638,37 @@ html.light .sticky-contact {
     font-size: 15px;
   }
 }
+
+/* Light-theme contrast correction for headings with dark-theme overrides. */
+
+html.light .editorial-title,
+html.light .design-section-title,
+html.light .editorial-section-title,
+html.light .editorial-about-statement,
+html.light .editorial-about-statement > p,
+html.light .contact-information h3,
+html.light .editorial-project-body h3,
+html.light .editorial-capability h3,
+html.light .system-skill-title h3,
+html.light .experience-entry h3 {
+  color: #17191d !important;
+  animation: none !important;
+  opacity: 1 !important;
+}
+
+html.light .editorial-title span,
+html.light .design-section-title span,
+html.light .editorial-section-title span,
+html.light .editorial-about-statement span,
+html.light .contact-information h3 span {
+  color: inherit !important;
+}
+
+html.light .editorial-section-title span,
+html.light .design-section-title span {
+  color: #596273 !important;
+}
+
+html.light .mobile-navigation-inner {
+  background: transparent !important;
+}
