@@ -4511,7 +4511,39 @@ html.light .experience-entry:hover {
 }
 
 html.light .editorial-capability-featured {
-  background: linear-gradient(rgba(217, 72, 82, 0.94), rgba(217, 72, 82, 0.94));
+  background: rgba(255, 253, 248, 0.82);
+  color: #17191d;
+}
+
+html.light .editorial-capability-featured p {
+  color: #46505e !important;
+}
+
+html.light .editorial-capability-featured svg {
+  color: #d94852;
+}
+
+html.light .editorial-capability-featured .editorial-capability-top {
+  color: #667085;
+}
+
+html.light .editorial-capability-featured:hover,
+html.light .editorial-capability-featured:focus-within {
+  background: #d94852;
+  border-color: #d94852;
+  color: #17191d;
+}
+
+html.light .editorial-capability-featured:hover p,
+html.light .editorial-capability-featured:focus-within p {
+  color: #28313d !important;
+}
+
+html.light .editorial-capability-featured:hover svg,
+html.light .editorial-capability-featured:focus-within svg,
+html.light .editorial-capability-featured:hover .editorial-capability-top,
+html.light .editorial-capability-featured:focus-within .editorial-capability-top {
+  color: #17191d;
 }
 
 html.light .tag-list span,
