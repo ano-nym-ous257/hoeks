@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -94,8 +95,11 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#07080b",
-  colorScheme: "dark",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#f4f1ea" },
+    { media: "(prefers-color-scheme: dark)", color: "#07080b" },
+  ],
+  colorScheme: "dark light",
 };
 
 export default function RootLayout({
@@ -104,8 +108,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
+        <Script id="theme-bootstrap" strategy="beforeInteractive">
+          {`(function(){try{var saved=localStorage.getItem("gamefreak-theme");var theme=saved||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");var root=document.documentElement;root.classList.toggle("light",theme==="light");root.classList.toggle("dark",theme==="dark");root.dataset.theme=theme;}catch(_){document.documentElement.classList.add("dark");}})();`}
+        </Script>
         {children}
       </body>
     </html>

@@ -2,6 +2,7 @@
 
 import { Menu, X } from "lucide-react";
 import { useEffect, useState } from "react";
+import ThemeToggle from "@/components/ui/theme-toggle";
 
 const navigation = [
   { label: "About", href: "#about" },
@@ -43,20 +44,24 @@ export default function Navbar() {
             ))}
           </div>
 
-          <a className="nav-contact" href="#contact">
-            Let&apos;s talk
-          </a>
+          <div className="nav-actions">
+            <ThemeToggle />
 
-          <button
-            className="mobile-menu-button"
-            type="button"
-            aria-label={menuOpen ? "Close navigation" : "Open navigation"}
-            aria-expanded={menuOpen}
-            aria-controls="mobile-navigation"
-            onClick={() => setMenuOpen((current) => !current)}
-          >
-            {menuOpen ? <X size={22} /> : <Menu size={22} />}
-          </button>
+            <a className="nav-contact" href="#contact">
+              Let&apos;s talk
+            </a>
+
+            <button
+              className="mobile-menu-button"
+              type="button"
+              aria-label={menuOpen ? "Close navigation" : "Open navigation"}
+              aria-expanded={menuOpen}
+              aria-controls="mobile-navigation"
+              onClick={() => setMenuOpen((current) => !current)}
+            >
+              {menuOpen ? <X size={22} /> : <Menu size={22} />}
+            </button>
+          </div>
         </nav>
       </header>
 
